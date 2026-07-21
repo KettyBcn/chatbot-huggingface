@@ -28,7 +28,7 @@ while True:
   if user_input.lower() == "exit":
       break
   messages.append({"role": "user", "content": user_input})
-  messages = [messages[0]] + messages[-10:]
+  messages = [messages[0]] + messages[1:][-10:]
   tokenized = tokenizer.apply_chat_template(
       messages,
       tokenize=True,
