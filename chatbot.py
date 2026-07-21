@@ -22,7 +22,7 @@ while True:
         
     prompt = history_string + f"\nUser: {input_text}\nBot:"
 
-   inputs = tokenizer(
+    inputs = tokenizer(
         prompt,
         return_tensors="pt",
         truncation=True,
