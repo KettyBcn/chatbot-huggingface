@@ -22,12 +22,12 @@ while True:
         
     prompt = history_string + f"\nUser: {input_text}\nBot:"
 
-    inputs = tokenizer(
-    prompt,
-    return_tensors="pt",
-    truncation=True,
-    max_length=512
-)
+   inputs = tokenizer(
+        prompt,
+        return_tensors="pt",
+        truncation=True,
+        max_length=512
+    )
 
     # Generate response
     outputs = model.generate(
