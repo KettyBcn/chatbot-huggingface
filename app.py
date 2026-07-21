@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_cors import CORS
-import json
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -14,12 +14,17 @@ conversation_history = []
 @app.route('/')
 def home():
     return 'Hello, World!'
+# El cliente envía un JSON con esta forma: {"prompt": "mensaje del usuario"}
 
 @app.route('/chatbot', methods=['POST'])
 def handle_prompt():
     data = request.get_data(as_text=True)
     data = json.loads(data)
     input_text = data['prompt']
+
+    # Keep only recent conversation
+    global conversation_history
+    conversation_history = conversation_history[-6:]
 
     # Create conversation history string
     history = "\n".join(conversation_history)
@@ -28,7 +33,7 @@ def handle_prompt():
     inputs = tokenizer.encode_plus(history, input_text, return_tensors="pt")
 
     # Generate the response from the model
-    outputs = model.generate(**inputs, max_length=60)
+    outputs = model.generate(**inputs, max_new_tokens=60)
 
     # Decode the response
     response = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
